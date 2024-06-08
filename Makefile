@@ -6,3 +6,6 @@ run: test
 
 install: run
 	go install ./checkip.go
+
+extend: test
+	go install ./cmd/extend/checkipext.go
