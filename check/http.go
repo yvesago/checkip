@@ -7,10 +7,12 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/TylerBrock/colorjson"
 )
 
 // defaultHttpClient is reused by checks that make HTTP requests.
-var defaultHttpClient = newHttpClient(&http.Client{Timeout: 10 * time.Second})
+var defaultHttpClient = newHttpClient(&http.Client{Timeout: 5 * time.Second})
 
 type httpClient struct {
 	client *http.Client
@@ -66,6 +68,16 @@ func (c httpClient) GetJson(apiUrl string, headers map[string]string, queryParam
 	b, err := c.Get(apiUrl, headers, queryParams)
 	if err != nil {
 		return err
+	}
+	if Debug {
+		var dat map[string]interface{}
+		json.Unmarshal(b, &dat)
+		// Make a custom formatter with indent set
+		f := colorjson.NewFormatter()
+		f.Indent = 4
+		// Marshall the Colorized JSON
+		s, _ := f.Marshal(dat)
+		fmt.Println(string(s))
 	}
 	if response != nil {
 		if err := json.Unmarshal(b, response); err != nil {
