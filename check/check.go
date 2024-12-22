@@ -8,11 +8,11 @@ import (
 	"regexp"
 )
 
-// Existing Check types.
+// Type of a check.
 const (
-	TypeInfo               Type = iota // some information about the IP address
-	TypeIsMalicious                    // whether the IP address is considered malicious
-	TypeInfoAndIsMalicious             // both of the above
+	Info               Type = iota // some information about the IP address
+	IsMalicious                    // whether the IP address is considered malicious
+	InfoAndIsMalicious             // both of the above
 )
 
 // Funcs contains all available functions for checking IP addresses.
@@ -54,7 +54,8 @@ func (t Type) MarshalJSON() ([]byte, error) {
 // Func gathers generic and/or security information about an IP address.
 type Func func(ipaddr net.IP) (Check, error)
 
-// Check is the information gathered about an IP address.
+// Check contains information on the check itself and
+// the obtained information about an IP address
 type Check struct {
 	Description        string `json:"description"` // max 15 chars
 	Type               Type   `json:"type"`
