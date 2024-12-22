@@ -58,7 +58,7 @@ func emocode(x string) (string, error) {
 func IOCLoc(ipaddr net.IP) (Check, error) {
 	result := Check{
 		Description: "IOCLoc",
-		Type: TypeInfo,
+		Type: Info,
 	}
 
 	timeout := time.Duration(500) * time.Millisecond

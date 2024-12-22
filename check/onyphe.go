@@ -31,7 +31,7 @@ var onypheUrl = "https://www.onyphe.io/api/v2"
 func Onyphe(ipaddr net.IP) (Check, error) {
 	result := Check{
 		Description: "onyphe.io",
-		Type: TypeInfoAndIsMalicious,
+		Type: InfoAndIsMalicious,
 	}
 
 	apiKey, err := getConfigValue("ONYPHE_API_KEY")

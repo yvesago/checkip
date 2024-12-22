@@ -28,7 +28,7 @@ func TestOnyphe(t *testing.T) {
 		result, err := Onyphe(net.ParseIP("118.25.6.39"))
 		require.NoError(t, err)
 		assert.Equal(t, "onyphe.io", result.Description)
-		assert.Equal(t, TypeInfoAndIsMalicious, result.Type)
+		assert.Equal(t, InfoAndIsMalicious, result.Type)
         assert.Equal(t, true, result.IpAddrIsMalicious)
 		assert.Equal(t, "Open: snmp udp/161 (RouterOS, Mikrotik), winbox tcp/8291 (Linux Kernel, Linux)", result.IpAddrInfo.Summary())
 	})

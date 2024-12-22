@@ -17,7 +17,7 @@ func (rs Checks) ExtPrintSummary() string {
 			continue
 		}
 
-		if r.Type == check.TypeInfo || r.Type == check.TypeInfoAndIsMalicious {
+		if r.Type == check.Info || r.Type == check.InfoAndIsMalicious {
 			fmt.Printf("%-15s %s\n", r.Description, r.IpAddrInfo.Summary())
 			if r.Description == "IOCLoc" {
 				res = r.IpAddrInfo.Summary()
