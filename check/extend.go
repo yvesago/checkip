@@ -31,6 +31,7 @@ var All = []Func{
 	IPtoASN,
 	IsOnAWS,
 	MaxMind,
+	MyDB,
 	Onyphe,
 	OTX,
 	PhishStats,
