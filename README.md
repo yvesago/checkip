@@ -172,3 +172,70 @@ git tag -a v0.2.0 -m "new check func"
 
 git push --follow-tags # will build a new release on GitHub
 ```
+
+
+## Extended branch
+
+With a plugin system to choose each check on command line, or in config file, to manage your subscriptions plans
+
+```
+❯ git checkout extend
+❯ make extend
+
+❯ checkipext -h
+Usage of checkipext:
+ checkipext [-flag] IP [IP liste]
+  -d	debug
+  -j	detailed output in JSON
+  -p n
+        check n IP addresses in parallel (default 5)
+  -t string
+        list of checks
+
+  Available Checks :
+  IPtoASN, MyDB, Onyphe, Shodan, Spur, AbuseIPDB, DnsMX, IPSum, UrlScan, VirusTotal, MaxMind, OTX, SansISC, DnsName, Firehol, IsOnAWS, PhishStats, Ping, BlockList, CinsScore, DBip, Tls, Censys
+```
+
+or add default checks in  ``$HOME/.checkip.yaml`` file
+```
+CHECKS: IOCLoc, MyDB, Spur, BlockList, CinsScore, DBip, DnsName, Firehol, IPSum, IPtoASN, IsOnAWS, OTX, AbuseIPDB, Shodan, Onyphe, Tls
+```
+
+```
+❯ checkipext 91.228.166.47
+Checks: IOCLoc,MyDB,Spur,BlockList,CinsScore,DBip,DnsName,Firehol,IPSum,IPtoASN,IsOnAWS,OTX,AbuseIPDB,Shodan,Onyphe,Tls
+--- 91.228.166.47 ---
+IOCLoc          91.228.166.47 (SK)🇸🇰  AS50881 - ESET, spol. s r.o.
+abuseipdb.com   domain: eset.com, usage type: Commercial
+db-ip.com       Petržalka, Slovakia
+dns name        skh1-webredir01-v.eset.com
+iptoasn.com     ESET-AS
+is on AWS       false
+shodan.io       OS: n/a, open: tcp/80 (nginx), tcp/443 (nginx), vulns: n/a
+tls             TLS 1.3, exp. 2024/01/02!!, www.eset.com, eset.com
+malicious prob. 11% (1/9) ✅
+
+--- 148.72.164.179 ---
+IOCLoc          148.72.164.179 (US)🇺🇸  AS30083 - AS-30083-US-VELIA-NET
+abuseipdb.com   domain: velia.net, usage type: Data Center/Web Hosting/Transit
+db-ip.com       St Louis, United States
+iptoasn.com     AS-30083-US-VELIA-NET
+spur.io         VPN : NORD_VPN
+is on AWS       false
+malicious prob. 12% (1/8) ✅
+
+IOC: 91.228.166.47 (SK)🇸🇰  AS50881 - ESET, spol. s r.o., 148.72.164.179 (US)🇺🇸  AS30083 - AS-30083-US-VELIA-NET
+```
+
+With additional checks :
+
+Onyphe
+
+IOCLoc : list all "IP (country) ASN"
+
+MyDB : to check your own DB by IP ``curl -H "Authorization: bearer {{token}} "MYDB_URL/{{IP}}"``
+
+```
+MYDB_URL: https://zzzzzzzzzz/sss/ssss
+MYDB_API_KEY: xxxxxxxxxxx
+```
