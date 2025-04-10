@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+
+	"github.com/logrusorgru/aurora"
 )
 
 type myDB struct {
@@ -18,8 +20,10 @@ var myDBUrl = ""
 
 // MyDB gets generic information from api.myDB.io.
 func MyDB(ipaddr net.IP) (Check, error) {
+	au := aurora.NewAurora(true)
+
 	result := Check{
-		Description: "MyDB",
+		Description: fmt.Sprintf("<%s>\t\t",au.Yellow("MyDB")),
 		Type:        InfoAndIsMalicious,
 	}
 
