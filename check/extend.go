@@ -29,6 +29,7 @@ var All = []Func{
 	Firehol,
 	IPSum,
 	IPtoASN,
+	IOCLoc,
 	IsOnAWS,
 	MaxMind,
 	MyDB,
