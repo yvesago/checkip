@@ -38,6 +38,7 @@ var All = []Func{
 	Ping,
 	SansISC,
 	Shodan,
+	Spur,
 	Tls,
 	UrlScan,
 	VirusTotal,
