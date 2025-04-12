@@ -97,7 +97,8 @@ malicious prob. 0% (0/10) ✅
 Generate 100 random IP addresses and select Russian or Chinese:
 
 ```
-❯ ./randip 100 | checkip -p 20 -j 2> /dev/null | jq -r '.ipAddr as $ip | .checks[] | select (.description == "db-ip.com" and (.ipAddrInfo.iso_code == "RU" or .ipAddrInfo.iso_code == "CN")) | $ip'
+❯ ./randip 100 | checkip -p 20 -j 2> /dev/null | \
+jq -r '.ipAddr as $ip | .checks[] | select (.description == "db-ip.com" and (.ipAddrInfo.iso_code == "RU" or .ipAddrInfo.iso_code == "CN")) | $ip'
 218.19.226.129
 119.32.13.38
 139.210.45.205
@@ -107,8 +108,8 @@ Find out who is trying to SSH into your Linux system:
 
 ```
 ❯ sudo journalctl --unit ssh --since "1 hour ago" | \
-∙ grep 'Bye Bye' | perl -wlne '/from ([\d\.]+)/ && print $1' | sort | uniq | \
-∙ checkip 2> /dev/null
+grep 'Bye Bye' | perl -wlne '/from ([\d\.]+)/ && print $1' | sort | uniq | \
+checkip 2> /dev/null
 --- 167.172.105.64 ---
 db-ip.com       Frankfurt am Main, Germany
 iptoasn.com     DIGITALOCEAN-ASN
