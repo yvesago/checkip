@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 )
@@ -204,6 +205,8 @@ func extractTgzFile(outFile string, r io.ReadCloser) error {
 
 	tarReader := tar.NewReader(gzipReader)
 
+	missingFile := true
+
 	for {
 		tarHeader, err := tarReader.Next()
 		if err == io.EOF {
@@ -213,13 +216,19 @@ func extractTgzFile(outFile string, r io.ReadCloser) error {
 			return err
 		}
 		if tarHeader.Typeflag == tar.TypeReg {
-			if filepath.Base(tarHeader.Name) == filepath.Base(outFile) {
+			if strings.Contains(filepath.Base(outFile), filepath.Base(tarHeader.Name)) {
+				missingFile = false
 				if err := writeTarEntry(outFile, tarReader); err != nil {
 					return err
 				}
 			}
 		}
 	}
+
+	if missingFile == true {
+		return fmt.Errorf("Missing file to create %s in tgz file", filepath.Base(outFile))
+	}
+
 	return nil
 }
 
