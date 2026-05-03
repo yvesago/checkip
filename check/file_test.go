@@ -1,6 +1,7 @@
 package check
 
 import (
+	"archive/tar"
 	"bytes"
 	"compress/gzip"
 	"io"
@@ -127,6 +128,29 @@ func TestExtractGzFileReturnsCreateError(t *testing.T) {
 	err = extractGzFile(outFile, io.NopCloser(bytes.NewReader(compressed.Bytes())))
 
 	require.Error(t, err)
+}
+
+func TestExtractTgzFileReturnsCreateError(t *testing.T) {
+	var compressed bytes.Buffer
+	zw := gzip.NewWriter(&compressed)
+	tw := tar.NewWriter(zw)
+	filename := "testdata/file.txt"
+	file, err := os.Open(filename)
+	info, err := file.Stat()
+	header, err := tar.FileInfoHeader(info, info.Name())
+	header.Name = filename
+	err = tw.WriteHeader(header)
+	_, err = io.Copy(tw, file)
+	require.NoError(t, err)
+
+	require.NoError(t, tw.Close())
+	require.NoError(t, zw.Close())
+
+	err = extractTgzFile("file.txt", io.NopCloser(bytes.NewReader(compressed.Bytes())))
+	require.NoError(t, err)
+	err = extractTgzFile("missing file", io.NopCloser(bytes.NewReader(compressed.Bytes())))
+	require.Error(t, err)
+
 }
 
 func TestUpdateFileKeepsExistingFileWhenRefreshFails(t *testing.T) {
