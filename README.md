@@ -162,7 +162,7 @@ Usage of checkipext:
 
 or add default checks in  ``$HOME/.checkip.yaml`` file
 ```
-CHECKS: IOCLoc, IpAPI, MyDB, spur.io, blocklist.de, cinsscore.com, db-ip.com, dns name, firehol.org,
+CHECKS: IOCLoc, IpAPI, MyDB, Misp, spur.io, blocklist.de, cinsscore.com, db-ip.com, dns name, firehol.org,
   github.com/stamparm/ipsum, iptoasn.com, is on AWS, otx.alienvault.com, abuseipdb.com, shodan.io,
   Onyphe, tls
 ```
