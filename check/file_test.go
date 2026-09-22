@@ -130,27 +130,30 @@ func TestExtractGzFileReturnsCreateError(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestExtractTgzFileReturnsCreateError(t *testing.T) {
+func TestExtractFileAtomicExtractsTgzEntryMatchingFinalFilename(t *testing.T) {
+	const content = "geoip database content"
+
 	var compressed bytes.Buffer
 	zw := gzip.NewWriter(&compressed)
 	tw := tar.NewWriter(zw)
-	filename := "testdata/file.txt"
-	file, err := os.Open(filename)
-	info, err := file.Stat()
-	header, err := tar.FileInfoHeader(info, info.Name())
-	header.Name = filename
-	err = tw.WriteHeader(header)
-	_, err = io.Copy(tw, file)
+	require.NoError(t, tw.WriteHeader(&tar.Header{
+		Name: "GeoLite2-City_20260501/GeoLite2-City.mmdb",
+		Mode: 0600,
+		Size: int64(len(content)),
+	}))
+	_, err := tw.Write([]byte(content))
 	require.NoError(t, err)
-
 	require.NoError(t, tw.Close())
 	require.NoError(t, zw.Close())
 
-	err = extractTgzFile("file.txt", io.NopCloser(bytes.NewReader(compressed.Bytes())))
-	require.NoError(t, err)
-	err = extractTgzFile("missing file", io.NopCloser(bytes.NewReader(compressed.Bytes())))
-	require.Error(t, err)
+	outFile := filepath.Join(t.TempDir(), "GeoLite2-City.mmdb")
 
+	err = extractFileAtomic(outFile, io.NopCloser(bytes.NewReader(compressed.Bytes())), "tgz")
+	require.NoError(t, err)
+
+	got, err := os.ReadFile(outFile)
+	require.NoError(t, err)
+	assert.Equal(t, content, string(got))
 }
 
 func TestUpdateFileKeepsExistingFileWhenRefreshFails(t *testing.T) {

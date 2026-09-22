@@ -111,6 +111,14 @@ var Definitions = []Definition{
 		},
 	},
 	{
+		Name:          "scanmalware.com",
+		Run:           ScanMalware,
+		PersistentTTL: remoteResultTTL,
+		NewInfo: func() IpInfo {
+			return &scanMalware{}
+		},
+	},
+	{
 		Name:          "shodan.io",
 		Run:           Shodan,
 		PersistentTTL: remoteResultTTL,
@@ -148,6 +156,14 @@ var Definitions = []Definition{
 		PersistentTTL: remoteResultTTL,
 		NewInfo: func() IpInfo {
 			return &virusTotal{}
+		},
+	},
+	{
+		Name:          "greynoise.io",
+		Run:           GreyNoise,
+		PersistentTTL: remoteResultTTL,
+		NewInfo: func() IpInfo {
+			return &grey{}
 		},
 	},
 }
